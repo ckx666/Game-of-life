@@ -8,12 +8,17 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <stdbool.h>
-#define ROWS 80
-#define COLS 80
-#define SPACE 10
+//#define ROWS 10
+//#define COLS 10
+//#define SPACE 10
+//SIZE OF MAP
+int ROWS=0;
+int COLS=0;
+int SPACE=0;
 SDL_Renderer * renderer;
 SDL_Window * window;
 bool isSetover = false;
+
 
 //draw allmap
 void drawMap(int map[ROWS][COLS]);
