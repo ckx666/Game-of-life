@@ -58,9 +58,59 @@ void lifeweek(int map[ROWS][COLS]){
             temp[i][j] = 0;
         }
     }
-//    int step=1;
-    while(1) {
-//        for (int k = 0; k < step; ++k) {
+    if (strlen(step)==0){
+        printf("You choose to evolve until end\n");
+        while(1) {
+            for (int i = 0; i < COLS; ++i) {
+                for (int j = 0; j < ROWS; ++j) {
+                    //get map cells how many live
+                    num = getRoundLive(map, i, j);
+                    if (3 == num) {
+                        temp[i][j] = 1;
+                    } else if (num == 2) {
+                        temp[i][j] = map[i][j];
+                    } else {
+                        temp[i][j] = 0;
+                    }
+                    SDL_Event event;
+                    while (SDL_PollEvent(&event)) {
+                        //printf("event type, %d\n",event.type);
+                        if (event.type == SDL_QUIT) {
+                            return;
+                        }
+                    }
+                }
+            }
+            memcpy(map, temp, sizeof(int) * ROWS * COLS);
+
+            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+            SDL_RenderClear(renderer);
+            for (int i = 0; i < COLS; ++i) {
+                for (int j = 0; j < ROWS; ++j) {
+                    drawRect(j, i, map[i][j]);
+                    SDL_Event event;
+                    while (SDL_PollEvent(&event)) {
+                        //printf("event type, %d\n",event.type);
+                        if (event.type == SDL_QUIT) {
+                            saveWorld(map);
+                            return;
+                        }
+                    }
+                }
+            }
+
+            SDL_RenderPresent(renderer);
+            SDL_Event event;
+            while (SDL_PollEvent(&event)) {
+                if (event.type == SDL_QUIT) {
+                    saveWorld(map);
+                    return;
+                }
+            }
+            SDL_Delay(10);
+        }
+    }else if(atoi(step)!=0){
+        for (int k = 0; k < atoi(step); ++k) {
         for (int i = 0; i < COLS; ++i) {
             for (int j = 0; j < ROWS; ++j) {
                 //get map cells how many live
@@ -92,13 +142,38 @@ void lifeweek(int map[ROWS][COLS]){
                 while (SDL_PollEvent(&event)) {
                     //printf("event type, %d\n",event.type);
                     if (event.type == SDL_QUIT) {
+//                        saveWorld(map);
+                        return;
+                    }
+                }
+            }
+        }
+        SDL_RenderPresent(renderer);
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+//                saveWorld(map);
+                return;
+            }
+        }
+        SDL_Delay(100);
+    }
+    while (1){
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        SDL_RenderClear(renderer);
+        for (int i = 0; i < COLS; ++i) {
+            for (int j = 0; j < ROWS; ++j) {
+                drawRect(j, i, map[i][j]);
+                SDL_Event event;
+                while (SDL_PollEvent(&event)) {
+                    //printf("event type, %d\n",event.type);
+                    if (event.type == SDL_QUIT) {
                         saveWorld(map);
                         return;
                     }
                 }
             }
         }
-
         SDL_RenderPresent(renderer);
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
@@ -107,9 +182,10 @@ void lifeweek(int map[ROWS][COLS]){
                 return;
             }
         }
-        SDL_Delay(10);
     }
-//    }
+    }else{
+        printf("invalid step\n");
+    }
 
 }
 void drawRect(int x,int y,int flag){
@@ -233,18 +309,18 @@ int createNewWorld(){
 int main() {
     int end=0;
     int i;
-    int ** temparr=NULL; //下面假设存储的数据类型为int
-    printf("Please enter height of the new world: ");//rows
-    scanf("%d",&ROWS);
-    printf("Please enter width of the new world: ");//cols
-    scanf("%d",&COLS);
-    printf("Please enter size of each cell: ");//size
-    scanf("%d",&SPACE);
-    temparr = (int **)malloc(sizeof(int*)*ROWS); //arr在这里可以看出成数组，数组的每个成员都是指向int类型的指针，这样每个指针指向的代表一行，共row行
-    for(i=0; i<ROWS; i++) //为每行申请空间
-    {
-        temparr[i]=(int*)malloc(sizeof(int)*COLS); //每一行有col列
-    }
+//    int ** temparr=NULL; //下面假设存储的数据类型为int
+//    printf("Please enter height of the new world: ");//rows
+//    scanf("%d",&ROWS);
+//    printf("Please enter width of the new world: ");//cols
+//    scanf("%d",&COLS);
+//    printf("Please enter size of each cell: ");//size
+//    scanf("%d",&SPACE);
+//    temparr = (int **)malloc(sizeof(int*)*ROWS); //arr在这里可以看出成数组，数组的每个成员都是指向int类型的指针，这样每个指针指向的代表一行，共row行
+//    for(i=0; i<ROWS; i++) //为每行申请空间
+//    {
+//        temparr[i]=(int*)malloc(sizeof(int)*COLS); //每一行有col列
+//    }
 //    while(1){
         int map[ROWS][COLS];//0 die 1 live
         for (int i = 0; i < ROWS; ++i) {
@@ -264,34 +340,11 @@ int main() {
 //        switch (atoi(option))
 //        {
 //            case 1:
-                if(SDL_Init(SDL_INIT_VIDEO)){
-                    SDL_Log("Can not init video, %s",SDL_GetError());
-                    return 1;//init
-                }
-                window = SDL_CreateWindow("Game of life",
-                                          SDL_WINDOWPOS_CENTERED,
-                                          SDL_WINDOWPOS_CENTERED,
-                                          COLS*SPACE,ROWS*SPACE,
-                                          SDL_WINDOW_SHOWN);
-                if(window==NULL){
-                    SDL_Log("Can not create window, %s",SDL_GetError());
-                    return 2;//window
-                }
-                renderer=SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
-                if (renderer==NULL){
-                    SDL_Log("Can not create renderer,%s",SDL_GetError());
-                }
-                drawMap(map);
-                saveWorld(map);
-                SDL_DestroyRenderer(renderer);
-                SDL_DestroyWindow(window);
-//                break;
-//            case 2:
 //                if(SDL_Init(SDL_INIT_VIDEO)){
 //                    SDL_Log("Can not init video, %s",SDL_GetError());
 //                    return 1;//init
 //                }
-//                window = SDL_CreateWindow("hello world",
+//                window = SDL_CreateWindow("Game of life",
 //                                          SDL_WINDOWPOS_CENTERED,
 //                                          SDL_WINDOWPOS_CENTERED,
 //                                          COLS*SPACE,ROWS*SPACE,
@@ -304,10 +357,38 @@ int main() {
 //                if (renderer==NULL){
 //                    SDL_Log("Can not create renderer,%s",SDL_GetError());
 //                }
-//                loadWorld(map);
-//                lifeweek(map);
+//                drawMap(map);
+//                saveWorld(map);
 //                SDL_DestroyRenderer(renderer);
 //                SDL_DestroyWindow(window);
+//                break;
+//            case 2:
+            printf("Please enter the steps you want to evolve ");
+//            scanf("%s", step);
+                gets(step);
+                if(SDL_Init(SDL_INIT_VIDEO)){
+                    SDL_Log("Can not init video, %s",SDL_GetError());
+                    return 1;//init
+                }
+                window = SDL_CreateWindow("hello world",
+                                          SDL_WINDOWPOS_CENTERED,
+                                          SDL_WINDOWPOS_CENTERED,
+                                          COLS*SPACE,ROWS*SPACE,
+                                          SDL_WINDOW_SHOWN);
+                if(window==NULL){
+                    SDL_Log("Can not create window, %s",SDL_GetError());
+                    return 2;//window
+                }
+                renderer=SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
+                if (renderer==NULL){
+                    SDL_Log("Can not create renderer,%s",SDL_GetError());
+                }
+//                    drawMap(map);
+//                saveWorld(map);
+                loadWorld(map);
+                lifeweek(map);
+                SDL_DestroyRenderer(renderer);
+                SDL_DestroyWindow(window);
 //                saveWorld(map);
 //                break;
 //            case 3:
