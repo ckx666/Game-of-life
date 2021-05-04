@@ -52,7 +52,7 @@ int getRoundLive(int map[ROWS][COLS],int i,int j){
 }
 void lifeweek(int map[ROWS][COLS]){
     int num;//store live cells around
-    int temp[ROWS][COLS]={0};// record
+    int temp[ROWS][COLS];// record
     for (int i = 0; i < ROWS; ++i) {
         for (int j = 0; j < COLS; ++j) {
             temp[j][i] = 0;
@@ -152,20 +152,34 @@ void drawMap(int map[ROWS][COLS]){
         SDL_RenderPresent(renderer);
         int x;
         int y;
+        int c=0;
         SDL_Event event;
-
+        SDL_Event event1;
+//        while(SDL_PollEvent(&event1)) {
+//            //printf("event type, %d\n",event.type);(event.type==SDL_MOUSEMOTION)
+//            if (event1.type == SDL_MOUSEBUTTONDOWN) {
+//                c = 1;
+//                break;
+//            }
+//            if (event.type==SDL_QUIT){
+//                return;
+//            }
+//
+//        }
         while(SDL_PollEvent(&event)){
-            //printf("event type, %d\n",event.type);(event.type==SDL_MOUSEMOTION)
+            //printf("event type, %d\n",event.type);(event.type==)SDL_MOUSEBUTTONDOWN
             if (event.type==SDL_MOUSEMOTION) {
 
                 x=event.motion.x/SPACE;
                 y=event.motion.y/SPACE;
+                map[y][x] = 1;
+
                 if(y==ROWS-1&&x==COLS-1){
                     isSetover=true;
                     return;
                 }
-                map[y][x] = 1;
-//                    if (event.type == SDL_MOUSEBUTTONDOWN) {
+//                SDL_PollEvent(&event);
+//                    if (event.type == SDL_MOUSEMOTION) {
 //                        map[y][x] = 1;
 //                    } else {
 //                        map[y][x] = 0;
@@ -184,7 +198,7 @@ void drawMap(int map[ROWS][COLS]){
 
 }
 int createNewWorld(){
-    int map[ROWS][COLS]={1};//0 die 1 live
+    int map[ROWS][COLS];//0 die 1 live
     for (int i = 0; i < ROWS; ++i) {
         for (int j = 0; j < COLS; ++j) {
             map[j][i] = 0;
@@ -209,15 +223,23 @@ int createNewWorld(){
     }
 
     drawMap(map);
-    lifeweek(map);
+    saveWorld(map);
+//    lifeweek(map);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+
     loadWorld(map);
 }
 
 int main() {
     int end=0;
     while(1){
+        int map[ROWS][COLS];//0 die 1 live
+        for (int i = 0; i < ROWS; ++i) {
+            for (int j = 0; j < COLS; ++j) {
+                map[j][i] = 0;
+            }
+        }
         printf("\nPlease choose an option\n");
         printf("1) Create a new world\n");
         printf("2) Run the new world\n");
@@ -229,12 +251,81 @@ int main() {
         switch (atoi(option))
         {
             case 1:
-                createNewWorld();
+
+                if(SDL_Init(SDL_INIT_VIDEO)){
+                    SDL_Log("Can not init video, %s",SDL_GetError());
+                    return 1;//init
+                }
+                window = SDL_CreateWindow("hello world",
+                                          SDL_WINDOWPOS_CENTERED,
+                                          SDL_WINDOWPOS_CENTERED,
+                                          COLS*SPACE,ROWS*SPACE,
+                                          SDL_WINDOW_SHOWN);
+                if(window==NULL){
+                    SDL_Log("Can not create window, %s",SDL_GetError());
+                    return 2;//window
+                }
+                renderer=SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
+                if (renderer==NULL){
+                    SDL_Log("Can not create renderer,%s",SDL_GetError());
+                }
+
+                drawMap(map);
+                saveWorld(map);
+
+                SDL_DestroyRenderer(renderer);
+                SDL_DestroyWindow(window);
                 break;
 
             case 2:
+                if(SDL_Init(SDL_INIT_VIDEO)){
+                    SDL_Log("Can not init video, %s",SDL_GetError());
+                    return 1;//init
+                }
+                window = SDL_CreateWindow("hello world",
+                                          SDL_WINDOWPOS_CENTERED,
+                                          SDL_WINDOWPOS_CENTERED,
+                                          COLS*SPACE,ROWS*SPACE,
+                                          SDL_WINDOW_SHOWN);
+                if(window==NULL){
+                    SDL_Log("Can not create window, %s",SDL_GetError());
+                    return 2;//window
+                }
+                renderer=SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
+                if (renderer==NULL){
+                    SDL_Log("Can not create renderer,%s",SDL_GetError());
+                }
+                loadWorld(map);
+                lifeweek(map);
+                SDL_DestroyRenderer(renderer);
+                SDL_DestroyWindow(window);
+                saveWorld(map);
                 break;
             case 3:
+
+                if(SDL_Init(SDL_INIT_VIDEO)){
+                    SDL_Log("Can not init video, %s",SDL_GetError());
+                    return 1;//init
+                }
+                window = SDL_CreateWindow("hello world",
+                                          SDL_WINDOWPOS_CENTERED,
+                                          SDL_WINDOWPOS_CENTERED,
+                                          COLS*SPACE,ROWS*SPACE,
+                                          SDL_WINDOW_SHOWN);
+                if(window==NULL){
+                    SDL_Log("Can not create window, %s",SDL_GetError());
+                    return 2;//window
+                }
+                renderer=SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
+                if (renderer==NULL){
+                    SDL_Log("Can not create renderer,%s",SDL_GetError());
+                }
+                loadWorld(map);
+                lifeweek(map);
+                SDL_DestroyRenderer(renderer);
+                SDL_DestroyWindow(window);
+                saveWorld(map);
+
                 break;
             case 4:
                 printf("Thank you for playing the game!\n");
