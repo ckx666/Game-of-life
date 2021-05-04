@@ -11,6 +11,7 @@
 //#define ROWS 10
 //#define COLS 10
 //#define SPACE 10
+
 //SIZE OF MAP
 int ROWS=0;
 int COLS=0;

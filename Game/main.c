@@ -233,17 +233,17 @@ int createNewWorld(){
 int main() {
     int end=0;
     int i;
-    int ** arr=NULL; //下面假设存储的数据类型为int
+    int ** temparr=NULL; //下面假设存储的数据类型为int
     printf("Please enter height of the new world: ");//rows
     scanf("%d",&ROWS);
     printf("Please enter width of the new world: ");//cols
     scanf("%d",&COLS);
     printf("Please enter size of each cell: ");//size
     scanf("%d",&SPACE);
-    arr = (int **)malloc(sizeof(int*)*ROWS); //arr在这里可以看出成数组，数组的每个成员都是指向int类型的指针，这样每个指针指向的代表一行，共row行
+    temparr = (int **)malloc(sizeof(int*)*ROWS); //arr在这里可以看出成数组，数组的每个成员都是指向int类型的指针，这样每个指针指向的代表一行，共row行
     for(i=0; i<ROWS; i++) //为每行申请空间
     {
-        arr[i]=(int*)malloc(sizeof(int)*COLS); //每一行有col列
+        temparr[i]=(int*)malloc(sizeof(int)*COLS); //每一行有col列
     }
 //    while(1){
         int map[ROWS][COLS];//0 die 1 live
