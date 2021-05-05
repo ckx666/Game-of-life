@@ -11,16 +11,16 @@
 #include <stdbool.h>
 //#define ROWS 50
 //#define COLS 100
-#define SPACE 10
+//#define SPACE 10
 
 //SIZE OF MAP
 int ROWS;
 int COLS;
-//int SPACE=0;
+int SPACE;
 char step[100000];
 SDL_Renderer * renderer;
 SDL_Window * window;
-bool isSetover = false;
+bool isSetover;
 
 
 //draw allmap
@@ -34,8 +34,7 @@ int getRoundLive(int map[ROWS][COLS],int i,int j);
 //saveoldworld
 int saveWorld(int map[ROWS][COLS]);
 //readoldworld
-int loadWorld(int ROWS, int COLS,int map1[ROWS][COLS]);
-//creatnewworld
-int createNewWorld();
+//int loadWorld(int ROWS, int COLS,int map1[ROWS][COLS]);
+
 
 #endif //GAME_LIFEGAME_H
