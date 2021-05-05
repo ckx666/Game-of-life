@@ -9,13 +9,13 @@
 #include <SDL2/SDL.h>
 #include <string.h>
 #include <stdbool.h>
-#define ROWS 20
-#define COLS 20
-#define SPACE 30
+//#define ROWS 50
+//#define COLS 100
+#define SPACE 10
 
 //SIZE OF MAP
-//int ROWS=0;
-//int COLS=0;
+int ROWS;
+int COLS;
 //int SPACE=0;
 char step[100000];
 SDL_Renderer * renderer;
@@ -34,7 +34,7 @@ int getRoundLive(int map[ROWS][COLS],int i,int j);
 //saveoldworld
 int saveWorld(int map[ROWS][COLS]);
 //readoldworld
-int loadWorld(int map[ROWS][COLS]);
+int loadWorld(int ROWS, int COLS,int map1[ROWS][COLS]);
 //creatnewworld
 int createNewWorld();
 

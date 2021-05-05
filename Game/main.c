@@ -1,21 +1,30 @@
 #include "LifeGame.h"
 
-int loadWorld(int map[ROWS][COLS]){
+int loadWorld(int ROWS, int COLS, int map1[ROWS][COLS]){
 //    int b[2][3]={1};
+    int m;
+    int n;
     FILE *fp1= fopen("oldWorld.txt","r");
     if(fp1 ==NULL){
         printf("not such file!");
         return 1;
     }
+    fscanf(fp1,"%d\t",&m);
+    fscanf(fp1,"%d\n",&n);
     for (int i = 0; i < ROWS; ++i) {
         for (int j = 0; j < COLS; ++j) {
-            fscanf(fp1,"%d",&map[i][j]);
+            map1[i][j] = 0;
+        }
+    }
+    for (int i = 0; i < ROWS; ++i) {
+        for (int j = 0; j < COLS; ++j) {
+            fscanf(fp1,"%d",&map1[i][j]);
         }
     }
     fclose(fp1);
     for (int i = 0; i < ROWS; ++i) {
         for (int j = 0; j < COLS; ++j) {
-            printf("%d\t",map[i][j]);
+            printf("%d\t",map1[i][j]);
         }
         printf("\n");
     }
@@ -35,6 +44,8 @@ int saveWorld(int map[ROWS][COLS]){
         }
         fprintf(fp,"%c",c);
     }
+    fprintf(fp,"%d\t",ROWS);
+    fprintf(fp,"%d",COLS);
     fclose(fp);
     printf("succeed");
 }
@@ -58,6 +69,7 @@ void lifeweek(int map[ROWS][COLS]){
             temp[i][j] = 0;
         }
     }
+//    while(1) {
     if (strlen(step)==0){
         printf("You choose to evolve until end\n");
         while(1) {
@@ -303,31 +315,58 @@ int createNewWorld(){
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
 
-    loadWorld(map);
+//    loadWorld(map);
 }
 
 int main() {
     int end=0;
     int i;
-//    int ** temparr=NULL; //下面假设存储的数据类型为int
+    int ** temparr=NULL; //下面假设存储的数据类型为int
 //    printf("Please enter height of the new world: ");//rows
 //    scanf("%d",&ROWS);
 //    printf("Please enter width of the new world: ");//cols
 //    scanf("%d",&COLS);
 //    printf("Please enter size of each cell: ");//size
 //    scanf("%d",&SPACE);
-//    temparr = (int **)malloc(sizeof(int*)*ROWS); //arr在这里可以看出成数组，数组的每个成员都是指向int类型的指针，这样每个指针指向的代表一行，共row行
-//    for(i=0; i<ROWS; i++) //为每行申请空间
-//    {
-//        temparr[i]=(int*)malloc(sizeof(int)*COLS); //每一行有col列
-//    }
+    ROWS=20;
+    COLS=30;
+    temparr = (int **)malloc(sizeof(int*)*ROWS); //arr在这里可以看出成数组，数组的每个成员都是指向int类型的指针，这样每个指针指向的代表一行，共row行
+    for(i=0; i<ROWS; i++) //为每行申请空间
+    {
+        temparr[i]=(int*)malloc(sizeof(int)*COLS); //每一行有col列
+    }
 //    while(1){
+
         int map[ROWS][COLS];//0 die 1 live
         for (int i = 0; i < ROWS; ++i) {
             for (int j = 0; j < COLS; ++j) {
                 map[i][j] = 0;
             }
         }
+    FILE *fp1= fopen("oldWorld.txt","r");
+    if(fp1 ==NULL){
+        printf("not such file!");
+        return 1;
+    }
+    int ROWS1;
+    int COLS1;
+    fscanf(fp1,"%d\t",&ROWS1);
+    fscanf(fp1,"%d\n",&COLS1);
+    fclose(fp1);
+    printf("%d\t",ROWS1);
+    printf("%d\n",COLS1);
+    int ** temparr1=NULL; //下面假设存储的数据类型为int
+    temparr1 = (int **)malloc(sizeof(int*)*ROWS1); //arr在这里可以看出成数组，数组的每个成员都是指向int类型的指针，这样每个指针指向的代表一行，共row行
+    for(i=0; i<ROWS1; i++) //为每行申请空间
+    {
+        temparr1[i]=(int*)malloc(sizeof(int)*COLS1); //每一行有col列
+    }
+    int map1[ROWS1][COLS1];//0 die 1 live
+    for (int i = 0; i < ROWS1; ++i) {
+        for (int j = 0; j < COLS1; ++j) {
+            map1[i][j] = 0;
+        }
+    }
 //        printf("\nWelcome to Game of Life\n");
 //        printf("Please choose an option\n");
 //        printf("1) Create a new world\n");
@@ -359,36 +398,39 @@ int main() {
 //                }
 //                drawMap(map);
 //                saveWorld(map);
+    loadWorld(ROWS1,COLS1,map1);
 //                SDL_DestroyRenderer(renderer);
 //                SDL_DestroyWindow(window);
+
 //                break;
 //            case 2:
-            printf("Please enter the steps you want to evolve ");
-//            scanf("%s", step);
-                gets(step);
-                if(SDL_Init(SDL_INIT_VIDEO)){
-                    SDL_Log("Can not init video, %s",SDL_GetError());
-                    return 1;//init
-                }
-                window = SDL_CreateWindow("hello world",
-                                          SDL_WINDOWPOS_CENTERED,
-                                          SDL_WINDOWPOS_CENTERED,
-                                          COLS*SPACE,ROWS*SPACE,
-                                          SDL_WINDOW_SHOWN);
-                if(window==NULL){
-                    SDL_Log("Can not create window, %s",SDL_GetError());
-                    return 2;//window
-                }
-                renderer=SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
-                if (renderer==NULL){
-                    SDL_Log("Can not create renderer,%s",SDL_GetError());
-                }
-//                    drawMap(map);
-//                saveWorld(map);
-                loadWorld(map);
-                lifeweek(map);
-                SDL_DestroyRenderer(renderer);
-                SDL_DestroyWindow(window);
+//            printf("Please enter the steps you want to evolve ");
+////            scanf("%s", step);
+//                gets(step);
+
+//                if(SDL_Init(SDL_INIT_VIDEO)){
+//                    SDL_Log("Can not init video, %s",SDL_GetError());
+//                    return 1;//init
+//                }
+//                window = SDL_CreateWindow("hello world",
+//                                          SDL_WINDOWPOS_CENTERED,
+//                                          SDL_WINDOWPOS_CENTERED,
+//                                          COLS*SPACE,ROWS*SPACE,
+//                                          SDL_WINDOW_SHOWN);
+//                if(window==NULL){
+//                    SDL_Log("Can not create window, %s",SDL_GetError());
+//                    return 2;//window
+//                }
+//                renderer=SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
+//                if (renderer==NULL){
+//                    SDL_Log("Can not create renderer,%s",SDL_GetError());
+//                }
+////                    drawMap(map);
+////                saveWorld(map);
+//                loadWorld(map);
+//                lifeweek(map);
+//                SDL_DestroyRenderer(renderer);
+//                SDL_DestroyWindow(window);
 //                saveWorld(map);
 //                break;
 //            case 3:
