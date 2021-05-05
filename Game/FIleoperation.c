@@ -23,12 +23,7 @@ int loadWorld(int ROWS, int COLS, int map1[ROWS][COLS]){
         }
     }
     fclose(fp1);
-    for (int i = 0; i < ROWS; ++i) {
-        for (int j = 0; j < COLS; ++j) {
-            printf("%d\t",map1[i][j]);
-        }
-        printf("\n");
-    }
+
     return 0;
 }
 int saveWorld(int map[ROWS][COLS]){

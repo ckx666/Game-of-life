@@ -35,7 +35,7 @@ int getRoundLive(int map[ROWS][COLS],int i,int j);
 //saveoldworld
 int saveWorld(int map[ROWS][COLS]);
 //readoldworld
-//int loadWorld(int ROWS, int COLS,int map1[ROWS][COLS]);
+int loadWorld(int ROWS, int COLS,int map1[ROWS][COLS]);
 
 
 #endif //GAME_LIFEGAME_H

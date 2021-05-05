@@ -22,8 +22,8 @@ void lifeweek1(int map[ROWS][COLS]){//finite
     }
     while (1) {
 
-        for (int i = 0; i < COLS; ++i) {
-            for (int j = 0; j < ROWS; ++j) {
+        for (int i = 0; i < ROWS; ++i) {
+            for (int j = 0; j < COLS; ++j) {
 //get map cells how many live
                 num = getRoundLive(map, i, j);
                 if (3 == num) {
@@ -45,8 +45,8 @@ void lifeweek1(int map[ROWS][COLS]){//finite
         memcpy(map, temp, sizeof(int) * ROWS * COLS);
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
-        for (int i = 0; i < COLS; ++i) {
-            for (int j = 0; j < ROWS; ++j) {
+        for (int i = 0; i < ROWS; ++i) {
+            for (int j = 0; j < COLS; ++j) {
                 drawRect(j, i, map[i][j]);
                 SDL_Event event;
                 while (SDL_PollEvent(&event)) {
