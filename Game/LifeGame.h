@@ -22,13 +22,14 @@ SDL_Renderer * renderer;
 SDL_Window * window;
 bool isSetover;
 
-
+char getstep();
 //draw allmap
 void drawMap(int map[ROWS][COLS]);
 //draw a rect
 void drawRect(int x,int y,int flag);
 //lifeweek
 void lifeweek(int map[ROWS][COLS]);
+void lifeweek1(int map[ROWS][COLS]);
 //get live number
 int getRoundLive(int map[ROWS][COLS],int i,int j);
 //saveoldworld
