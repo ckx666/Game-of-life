@@ -21,8 +21,9 @@ char step[100000];
 SDL_Renderer * renderer;
 SDL_Window * window;
 bool isSetover;
+int delaytime;
 
-char getstep();
+
 //draw allmap
 void drawMap(int map[ROWS][COLS]);
 //draw a rect

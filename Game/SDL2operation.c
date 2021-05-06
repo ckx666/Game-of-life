@@ -41,11 +41,9 @@ void drawMap(int map[ROWS][COLS]){
         while(SDL_PollEvent(&event)){
             //printf("event type, %d\n",event.type);(event.type==)SDL_MOUSEBUTTONDOWN
             if (event.type==SDL_MOUSEMOTION) {
-
                 x=event.motion.x/SPACE;
                 y=event.motion.y/SPACE;
-                map[y][x] = 1;
-
+                    map[y][x] = 1;
                 if(y==ROWS-1&&x==COLS-1){
                     isSetover=true;
                     return;

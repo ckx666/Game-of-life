@@ -66,7 +66,7 @@ void lifeweek1(int map[ROWS][COLS]){//finite
                 return;
             }
         }
-        SDL_Delay(10);
+        SDL_Delay(delaytime);
     }
 }
 void lifeweek(int map[ROWS][COLS]){//step
@@ -123,7 +123,7 @@ void lifeweek(int map[ROWS][COLS]){//step
                 return;
             }
         }
-        SDL_Delay(100);
+        SDL_Delay(delaytime);
     }
     while (1) {
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
