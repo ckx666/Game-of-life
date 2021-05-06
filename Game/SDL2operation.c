@@ -1,19 +1,17 @@
 #include "LifeGame.h"
 void drawCell(int x,int y,int flag){
-    if (flag){
+    if (flag==1){
         SDL_SetRenderDrawColor(renderer,255,255,255,255);
         SDL_Rect r1 = {x*SPACE,y*SPACE,SPACE,SPACE};
-        SDL_SetRenderDrawBlendMode(renderer,SDL_BLENDMODE_BLEND);
         SDL_RenderFillRect(renderer,&r1);
     }
     else{
         SDL_SetRenderDrawColor(renderer,0,0,0,255);
         SDL_Rect r0 = {x*SPACE,y*SPACE,SPACE,SPACE};
-        SDL_SetRenderDrawBlendMode(renderer,SDL_BLENDMODE_BLEND);
         SDL_RenderFillRect(renderer,&r0);
     }
     //line color
-    SDL_SetRenderDrawColor(renderer,96,96,96,255);
+    SDL_SetRenderDrawColor(renderer,90,90,90,255);
     SDL_RenderDrawLine(renderer, x*SPACE, y*SPACE, x*SPACE+SPACE, y*SPACE);//ver
     SDL_RenderDrawLine(renderer, x*SPACE, y*SPACE, x*SPACE, y*SPACE+SPACE);//leftdown
     SDL_RenderDrawLine(renderer, x*SPACE+SPACE, y*SPACE, x*SPACE+SPACE, y*SPACE+SPACE);//rightdown

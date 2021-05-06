@@ -113,7 +113,6 @@ int main() {
             //2 start
         else if (atoi(option)==2) {
 
-
 //get information start
             FILE *fp1 = fopen("oldWorld.txt", "r");
             if (fp1 == NULL) {
@@ -156,15 +155,15 @@ int main() {
                 fclose(fp1);
 
                 //test print
-                printf("%d\t", ROWS);
-                printf("%d\t", COLS);
-                printf("%d\n", SPACE);
-                for (i = 0; i < ROWS; ++i) {
-                    for (int j = 0; j < COLS; ++j) {
-                        printf("%d\t", map1[i][j]);
-                    }
-                    printf("\n");
-                }
+//                printf("%d\t", ROWS);
+//                printf("%d\t", COLS);
+//                printf("%d\n", SPACE);
+//                for (i = 0; i < ROWS; ++i) {
+//                    for (int j = 0; j < COLS; ++j) {
+//                        printf("%d\t", map1[i][j]);
+//                    }
+//                    printf("\n");
+//                }
 
                 //test print
                 if (strcmp(choice, "yes") == 0) {
