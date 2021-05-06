@@ -122,7 +122,7 @@ int main() {
             }
 
             fscanf(fp1, "%d\t", &ROWS);
-            if (ROWS == NULL) {
+            if (ROWS == '\0') {
                 printf("There isn't an old world. Please create one first!\n");
                 fclose(fp1);
             } else {
