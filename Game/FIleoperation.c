@@ -19,5 +19,5 @@ int saveWorld(int map[ROWS][COLS]){
     }
 
     fclose(fp);
-    printf("succeed");
+    printf("Save file successfully!\n");
 }

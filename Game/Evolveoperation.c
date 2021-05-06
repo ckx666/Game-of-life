@@ -2,7 +2,7 @@
 
 int getRoundLive(int map[ROWS][COLS],int i,int j){
     int num = 0;
-    if(i>0&&j>0&&map[i-1][j-1])num++;//up
+    if(i>0&&j>0&&map[i-1][j-1])num++;//up left
     if(i>0&&map[i-1][j])num++;
     if(i>0&&j<COLS-1&&map[i-1][j+1])num++;
     if(j>0&&map[i][j-1])num++;
@@ -12,7 +12,8 @@ int getRoundLive(int map[ROWS][COLS],int i,int j){
     if(i<ROWS-1&&j<COLS-1&&map[i+1][j+1])num++;
     return num;
 }
-void lifeweek1(int map[ROWS][COLS]) {//finite
+
+void lifeCycle_Finite(int map[ROWS][COLS]) {//finite choice
     int num;//store live cells around
     int temp[ROWS][COLS];// record
     for (int i = 0; i < ROWS; ++i) {
@@ -24,7 +25,7 @@ void lifeweek1(int map[ROWS][COLS]) {//finite
 
         for (int i = 0; i < ROWS; ++i) {
             for (int j = 0; j < COLS; ++j) {
-//get map cells how many live
+//get map cells how many live principle
                 num = getRoundLive(map, i, j);
                 if (num == 2) {
                     temp[i][j] = map[i][j];
@@ -49,7 +50,7 @@ void lifeweek1(int map[ROWS][COLS]) {//finite
     SDL_RenderClear(renderer);
     for (int i = 0; i < ROWS; ++i) {
         for (int j = 0; j < COLS; ++j) {
-            drawRect(j, i, map[i][j]);
+            drawCell(j, i, map[i][j]);
             SDL_Event event;
             while (SDL_PollEvent(&event)) {
                 //printf("event type, %d\n",event.type);
@@ -69,10 +70,9 @@ void lifeweek1(int map[ROWS][COLS]) {//finite
         }
     }
     SDL_Delay(delaytime);
-
     }
 }
-void lifeweek(int map[ROWS][COLS]){//step
+void lifeCycle_Step(int map[ROWS][COLS]){//step choice
     int num;//store live cells around
     int temp[ROWS][COLS];// record
     for (int i = 0; i < ROWS; ++i) {
@@ -83,7 +83,7 @@ void lifeweek(int map[ROWS][COLS]){//step
     for (int k = 0; k < atoi(step); ++k) {
         for (int i = 0; i < ROWS; ++i) {
             for (int j = 0; j < COLS; ++j) {
-                //get map cells how many live
+                //get map cells how many live principle
                 num = getRoundLive(map, i, j);
                 if (num == 2) {
                     temp[i][j] = map[i][j];
@@ -108,7 +108,7 @@ void lifeweek(int map[ROWS][COLS]){//step
         SDL_RenderClear(renderer);
         for (int i = 0; i < ROWS; ++i) {
             for (int j = 0; j < COLS; ++j) {
-                drawRect(j, i, map[i][j]);
+                drawCell(j, i, map[i][j]);
                 SDL_Event event;
                 while (SDL_PollEvent(&event)) {
                     //printf("event type, %d\n",event.type);
@@ -134,7 +134,7 @@ void lifeweek(int map[ROWS][COLS]){//step
         SDL_RenderClear(renderer);
         for (int i = 0; i < ROWS; ++i) {
             for (int j = 0; j < COLS; ++j) {
-                drawRect(j, i, map[i][j]);
+                drawCell(j, i, map[i][j]);
                 SDL_Event event;
                 while (SDL_PollEvent(&event)) {
                     //printf("event type, %d\n",event.type);
@@ -154,8 +154,4 @@ void lifeweek(int map[ROWS][COLS]){//step
             }
         }
     }
-//        } else {
-//            printf("invalid step\n");
-//        }
-//    }
 }

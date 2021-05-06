@@ -69,8 +69,8 @@ int main() {
                     if (renderer == NULL) {
                         SDL_Log("Can not create renderer,%s", SDL_GetError());
                     }
-                    drawMap(map);
-                    lifeweek(map);
+                    drawWorld(map);
+                    lifeCycle_Step(map);
                     saveWorld(map);
                     SDL_DestroyRenderer(renderer);
                     SDL_DestroyWindow(window);
@@ -96,8 +96,8 @@ int main() {
                 if (renderer == NULL) {
                     SDL_Log("Can not create renderer,%s", SDL_GetError());
                 }
-                drawMap(map);
-                lifeweek1(map);
+                drawWorld(map);
+                lifeCycle_Finite(map);
                 saveWorld(map);
                 SDL_DestroyRenderer(renderer);
                 SDL_DestroyWindow(window);
@@ -142,12 +142,12 @@ int main() {
                     temparr1[i] = (int *) malloc(sizeof(int) * COLS); //每一行有col列
                 }
                 int map1[ROWS][COLS];//0 die 1 live
-                for (int i = 0; i < ROWS; ++i) {
+                for (i = 0; i < ROWS; ++i) {
                     for (int j = 0; j < COLS; ++j) {
                         map1[i][j] = 0;
                     }
                 }
-                for (int i = 0; i < ROWS; ++i) {
+                for (i = 0; i < ROWS; ++i) {
                     for (int j = 0; j < COLS; ++j) {
                         fscanf(fp1, "%d", &map1[i][j]);
                     }
@@ -159,7 +159,7 @@ int main() {
                 printf("%d\t", ROWS);
                 printf("%d\t", COLS);
                 printf("%d\n", SPACE);
-                for (int i = 0; i < ROWS; ++i) {
+                for (i = 0; i < ROWS; ++i) {
                     for (int j = 0; j < COLS; ++j) {
                         printf("%d\t", map1[i][j]);
                     }
@@ -188,7 +188,7 @@ int main() {
                         if (renderer == NULL) {
                             SDL_Log("Can not create renderer,%s", SDL_GetError());
                         }
-                        lifeweek(map1);
+                        lifeCycle_Step(map1);
                         saveWorld(map1);
                         SDL_DestroyRenderer(renderer);
                         SDL_DestroyWindow(window);
@@ -214,7 +214,7 @@ int main() {
                     if (renderer == NULL) {
                         SDL_Log("Can not create renderer,%s", SDL_GetError());
                     }
-                    lifeweek1(map1);
+                    lifeCycle_Finite(map1);
                     saveWorld(map1);
                     SDL_DestroyRenderer(renderer);
                     SDL_DestroyWindow(window);

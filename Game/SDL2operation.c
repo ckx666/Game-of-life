@@ -1,5 +1,5 @@
 #include "LifeGame.h"
-void drawRect(int x,int y,int flag){
+void drawCell(int x,int y,int flag){
     if (flag){
         SDL_SetRenderDrawColor(renderer,255,255,255,255);
         SDL_Rect r1 = {x*SPACE,y*SPACE,SPACE,SPACE};
@@ -19,13 +19,13 @@ void drawRect(int x,int y,int flag){
     SDL_RenderDrawLine(renderer, x*SPACE+SPACE, y*SPACE, x*SPACE+SPACE, y*SPACE+SPACE);//rightdown
     SDL_RenderDrawLine(renderer, x*SPACE+SPACE, y*SPACE+SPACE, x*SPACE, y*SPACE+SPACE);//hori
 }
-void drawMap(int map[ROWS][COLS]){
+void drawWorld(int map[ROWS][COLS]){
     while(1){
         SDL_SetRenderDrawColor(renderer,255,255,255,255);
         SDL_RenderClear(renderer);
         for (int i = 0; i < ROWS; ++i) {
             for (int j = 0; j < COLS; ++j) {
-                drawRect(j,i,map[i][j]);
+                drawCell(j,i,map[i][j]);
                 SDL_Event event;
                 while(SDL_PollEvent(&event)){
                     if (event.type==SDL_QUIT){
@@ -48,7 +48,7 @@ void drawMap(int map[ROWS][COLS]){
                 }
 
                 if(y==ROWS-1&&x==COLS-1){
-                    isSetover=true;
+                    isOver=true;
                     return;
                 }
             }else if (event.type==SDL_MOUSEBUTTONDOWN){
@@ -57,7 +57,7 @@ void drawMap(int map[ROWS][COLS]){
                     map[y][x] = 1;
 
                 if(y==ROWS-1&&x==COLS-1){
-                    isSetover=true;
+                    isOver=true;
                     return;
                 }
             }
@@ -66,7 +66,7 @@ void drawMap(int map[ROWS][COLS]){
             }
         }
         SDL_Delay(10);
-        if(isSetover) {
+        if(isOver) {
             break;
         }
     }
