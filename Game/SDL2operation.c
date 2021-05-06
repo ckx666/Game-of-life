@@ -43,7 +43,19 @@ void drawMap(int map[ROWS][COLS]){
             if (event.type==SDL_MOUSEMOTION) {
                 x=event.motion.x/SPACE;
                 y=event.motion.y/SPACE;
+                if (event.button.button==SDL_BUTTON_LEFT){
                     map[y][x] = 1;
+                }
+
+                if(y==ROWS-1&&x==COLS-1){
+                    isSetover=true;
+                    return;
+                }
+            }else if (event.type==SDL_MOUSEBUTTONDOWN){
+                x=event.motion.x/SPACE;
+                y=event.motion.y/SPACE;
+                    map[y][x] = 1;
+
                 if(y==ROWS-1&&x==COLS-1){
                     isSetover=true;
                     return;

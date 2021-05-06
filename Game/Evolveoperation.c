@@ -12,7 +12,7 @@ int getRoundLive(int map[ROWS][COLS],int i,int j){
     if(i<ROWS-1&&j<COLS-1&&map[i+1][j+1])num++;
     return num;
 }
-void lifeweek1(int map[ROWS][COLS]){//finite
+void lifeweek1(int map[ROWS][COLS]) {//finite
     int num;//store live cells around
     int temp[ROWS][COLS];// record
     for (int i = 0; i < ROWS; ++i) {
@@ -26,47 +26,50 @@ void lifeweek1(int map[ROWS][COLS]){//finite
             for (int j = 0; j < COLS; ++j) {
 //get map cells how many live
                 num = getRoundLive(map, i, j);
-                if (3 == num) {
-                    temp[i][j] = 1;
-                } else if (num == 2) {
+                if (num == 2) {
                     temp[i][j] = map[i][j];
-                } else {
+                }
+                 else if (num==3 ) {
+                    temp[i][j] = 1;
+                }else {
                     temp[i][j] = 0;
                 }
-                SDL_Event event;
-                while (SDL_PollEvent(&event)) {
-                    //printf("event type, %d\n",event.type);
-                    if (event.type == SDL_QUIT) {
-                        return;
-                    }
+            }
+            SDL_Event event;
+            while (SDL_PollEvent(&event)) {
+                //printf("event type, %d\n",event.type);
+                if (event.type == SDL_QUIT) {
+                    return;
                 }
             }
         }
-        memcpy(map, temp, sizeof(int) * ROWS * COLS);
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-        SDL_RenderClear(renderer);
-        for (int i = 0; i < ROWS; ++i) {
-            for (int j = 0; j < COLS; ++j) {
-                drawRect(j, i, map[i][j]);
-                SDL_Event event;
-                while (SDL_PollEvent(&event)) {
-                    //printf("event type, %d\n",event.type);
-                    if (event.type == SDL_QUIT) {
+
+    memcpy(map, temp, sizeof(int) * ROWS * COLS);
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderClear(renderer);
+    for (int i = 0; i < ROWS; ++i) {
+        for (int j = 0; j < COLS; ++j) {
+            drawRect(j, i, map[i][j]);
+            SDL_Event event;
+            while (SDL_PollEvent(&event)) {
+                //printf("event type, %d\n",event.type);
+                if (event.type == SDL_QUIT) {
 //            saveWorld(map);
-                        return;
-                    }
+                    return;
                 }
             }
         }
-        SDL_RenderPresent(renderer);
-        SDL_Event event;
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
+    }
+    SDL_RenderPresent(renderer);
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
 //            saveWorld(map);
-                return;
-            }
+            return;
         }
-        SDL_Delay(delaytime);
+    }
+    SDL_Delay(delaytime);
+
     }
 }
 void lifeweek(int map[ROWS][COLS]){//step
@@ -82,11 +85,12 @@ void lifeweek(int map[ROWS][COLS]){//step
             for (int j = 0; j < COLS; ++j) {
                 //get map cells how many live
                 num = getRoundLive(map, i, j);
-                if (3 == num) {
-                    temp[i][j] = 1;
-                } else if (num == 2) {
+                if (num == 2) {
                     temp[i][j] = map[i][j];
-                } else {
+                }
+                else if (3 == num) {
+                    temp[i][j] = 1;
+                }else {
                     temp[i][j] = 0;
                 }
                 SDL_Event event;
