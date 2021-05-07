@@ -1,6 +1,12 @@
 #include "LifeGame.h"
 int saveWorld(int map[ROWS][COLS]){
-
+    for (int i = 0; i < ROWS; ++i) {
+        for (int j = 0; j < COLS; ++j) {
+            if (map[i][j] != 1&&map[i][j] != 0){
+                return 1;
+            }
+        }
+    }
     char c='\n';
     FILE *fp= fopen("oldWorld.txt","w");
     if(fp ==NULL){
@@ -20,4 +26,5 @@ int saveWorld(int map[ROWS][COLS]){
 
     fclose(fp);
     printf("Save file successfully!\n");
+    return 0;
 }

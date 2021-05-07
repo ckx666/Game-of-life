@@ -1,10 +1,14 @@
 #include "LifeGame.h"
 
 int main() {
-    int end=0;
-    int i;
-    int new = 0;
-    char choice[10];
+    static int end=0;
+    static int i;
+    static int new = 0;
+    static char choice[10];
+    static char ROWS2[100];
+    static char COLS2[100];
+    static char SPACE2[100];
+    static char delaytime2[100];
     while(1) {
         printf("\nWelcome to Game of Life\n");
         printf("Please choose an option\n");
@@ -12,7 +16,7 @@ int main() {
         printf("2) Load and run an old world\n");
         printf("3) Leave\n");
         printf(" Option: ");
-        char option[100];
+        static char option[100];
         scanf("%s", option);
 
         //1 start
@@ -22,15 +26,62 @@ int main() {
             }
             else {
 
-
-            printf("\nPlease enter height of the new world: ");//rows
-            scanf("%d", &ROWS);
-            printf("Please enter width of the new world: ");//cols
-            scanf("%d", &COLS);
-            printf("Please enter size of each cell: ");//size
-            scanf("%d", &SPACE);
-            printf("Please enter delay time of each tep: ");//size
-            scanf("%d", &delaytime);
+                while (1){
+                    printf("\nPlease enter height of the new world: ");//rows
+                    scanf("%s", ROWS2);
+                    if (atoi(ROWS2)==0){
+                        printf("invalid height. Please enter again\n");
+                    } else if (atoi(ROWS2)<20){
+                        printf("Too small. Please enter again\n");
+                    }else if (atoi(ROWS2)>100){
+                        printf("Too big. Please enter again\n");
+                    } else{
+                        ROWS=atoi(ROWS2);
+                        break;
+                    }
+                }
+                while (1){
+                    printf("Please enter width of the new world: ");//cols
+                    scanf("%s", COLS2);
+                    if (atoi(COLS2)==0){
+                        printf("invalid height. Please enter again\n");
+                    } else if (atoi(COLS2)<20){
+                        printf("Too small. Please enter again\n");
+                    }else if (atoi(COLS2)>100){
+                        printf("Too big. Please enter again\n");
+                    } else{
+                        COLS=atoi(COLS2);
+                        break;
+                    }
+                }
+                while (1){
+                    printf("Please enter size of each cell: ");//size
+                    scanf("%s", SPACE2);
+                    if (atoi(SPACE2)==0){
+                        printf("invalid height. Please enter again\n");
+                    } else if (atoi(SPACE2)<1){
+                        printf("Too small. Please enter again\n");
+                    }else if (atoi(SPACE2)>50){
+                        printf("Too big. Please enter again\n");
+                    } else{
+                        SPACE=atoi(SPACE2);
+                        break;
+                    }
+                }
+                while (1){
+                    printf("Please enter delay time of each tep: ");//DELAY TIME
+                    scanf("%s", delaytime2);
+                    if (atoi(delaytime2)==0){
+                        printf("invalid height. Please enter again\n");
+                    } else if (atoi(delaytime2)<10){
+                        printf("Too small. Please enter again\n");
+                    }else if (atoi(delaytime2)>10000){
+                        printf("Too big. Please enter again\n");
+                    } else{
+                        delaytime=atoi(delaytime2);
+                        break;
+                    }
+                }
             printf("Do you want to set steps to evolve [yes/no]:\n ");//step
             scanf("%s", choice);
 
@@ -49,33 +100,36 @@ int main() {
             //initial array end
 
             if (strcmp(choice, "yes") == 0) {
-                printf("Please enter steps you want to evolve:\n ");//step
-                scanf("%s", step);
-                if (atoi(step) != 0) {
-                    if (SDL_Init(SDL_INIT_VIDEO)) {
-                        SDL_Log("Can not init video, %s", SDL_GetError());
-                        return 1;//init
+                while (1) {
+                    printf("Please enter steps you want to evolve:\n ");//step
+                    scanf("%s", step);
+                    if (atoi(step) != 0) {
+                        if (SDL_Init(SDL_INIT_VIDEO)) {
+                            SDL_Log("Can not init video, %s", SDL_GetError());
+                            return 1;//init
+                        }
+                        window = SDL_CreateWindow("Game of life",
+                                                  SDL_WINDOWPOS_CENTERED,
+                                                  SDL_WINDOWPOS_CENTERED,
+                                                  COLS * SPACE, ROWS * SPACE,
+                                                  SDL_WINDOW_SHOWN);
+                        if (window == NULL) {
+                            SDL_Log("Can not create window, %s", SDL_GetError());
+                            return 2;//window
+                        }
+                        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+                        if (renderer == NULL) {
+                            SDL_Log("Can not create renderer,%s", SDL_GetError());
+                        }
+                        drawWorld(map);
+                        lifeCycle_Step(map);
+                        saveWorld(map);
+                        SDL_DestroyRenderer(renderer);
+                        SDL_DestroyWindow(window);
+                        break;
+                    } else {
+                        printf("invalid step\n");
                     }
-                    window = SDL_CreateWindow("Game of life",
-                                              SDL_WINDOWPOS_CENTERED,
-                                              SDL_WINDOWPOS_CENTERED,
-                                              COLS * SPACE, ROWS * SPACE,
-                                              SDL_WINDOW_SHOWN);
-                    if (window == NULL) {
-                        SDL_Log("Can not create window, %s", SDL_GetError());
-                        return 2;//window
-                    }
-                    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-                    if (renderer == NULL) {
-                        SDL_Log("Can not create renderer,%s", SDL_GetError());
-                    }
-                    drawWorld(map);
-                    lifeCycle_Step(map);
-                    saveWorld(map);
-                    SDL_DestroyRenderer(renderer);
-                    SDL_DestroyWindow(window);
-                } else {
-                    printf("invalid step\n");
                 }
 
             } else if (strcmp(choice, "no") == 0) {
@@ -154,47 +208,36 @@ int main() {
                 //initial array end
                 fclose(fp1);
 
-                //test print
-//                printf("%d\t", ROWS);
-//                printf("%d\t", COLS);
-//                printf("%d\n", SPACE);
-//                for (i = 0; i < ROWS; ++i) {
-//                    for (int j = 0; j < COLS; ++j) {
-//                        printf("%d\t", map1[i][j]);
-//                    }
-//                    printf("\n");
-//                }
-
-                //test print
                 if (strcmp(choice, "yes") == 0) {
-                    printf("Please enter steps you want to evolve:\n ");//step
-                    scanf("%s", step);
-                    if (atoi(step) != 0) {
-                        if (SDL_Init(SDL_INIT_VIDEO)) {
-                            SDL_Log("Can not init video, %s", SDL_GetError());
-                            return 1;//init
+                    while (1) {
+                        printf("Please enter steps you want to evolve:\n ");//step
+                        scanf("%s", step);
+                        if (atoi(step) != 0) {
+                            if (SDL_Init(SDL_INIT_VIDEO)) {
+                                SDL_Log("Can not init video, %s", SDL_GetError());
+                                return 1;//init
+                            }
+                            window = SDL_CreateWindow("Game of life",
+                                                      SDL_WINDOWPOS_CENTERED,
+                                                      SDL_WINDOWPOS_CENTERED,
+                                                      COLS * SPACE, ROWS * SPACE,
+                                                      SDL_WINDOW_SHOWN);
+                            if (window == NULL) {
+                                SDL_Log("Can not create window, %s", SDL_GetError());
+                                return 2;//window
+                            }
+                            renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+                            if (renderer == NULL) {
+                                SDL_Log("Can not create renderer,%s", SDL_GetError());
+                            }
+                            lifeCycle_Step(map1);
+                            saveWorld(map1);
+                            SDL_DestroyRenderer(renderer);
+                            SDL_DestroyWindow(window);
+                        } else {
+                            printf("invalid step\n");
                         }
-                        window = SDL_CreateWindow("Game of life",
-                                                  SDL_WINDOWPOS_CENTERED,
-                                                  SDL_WINDOWPOS_CENTERED,
-                                                  COLS * SPACE, ROWS * SPACE,
-                                                  SDL_WINDOW_SHOWN);
-                        if (window == NULL) {
-                            SDL_Log("Can not create window, %s", SDL_GetError());
-                            return 2;//window
-                        }
-                        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-                        if (renderer == NULL) {
-                            SDL_Log("Can not create renderer,%s", SDL_GetError());
-                        }
-                        lifeCycle_Step(map1);
-                        saveWorld(map1);
-                        SDL_DestroyRenderer(renderer);
-                        SDL_DestroyWindow(window);
-                    } else {
-                        printf("invalid step\n");
                     }
-
                 } else if (strcmp(choice, "no") == 0) {
                     if (SDL_Init(SDL_INIT_VIDEO)) {
                         SDL_Log("Can not init video, %s", SDL_GetError());
@@ -224,19 +267,16 @@ int main() {
         }
 //leave
             else if(atoi(option)==3){
-
                 printf("Thank you for playing the game!\n");
                 printf("Goodbye!");
                 end = 1;
             }
             else{
-
                 printf("Sorry, the option you entered was invalid, please try again.\n");
         }
         if (end == 1)
             break;
     }
-
     return 0;
 
 }

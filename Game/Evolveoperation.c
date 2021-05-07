@@ -1,7 +1,17 @@
 #include "LifeGame.h"
 
-int getRoundLive(int map[ROWS][COLS],int i,int j){
-    int num = 0;
+extern int getRoundLive(int map[ROWS][COLS],int i,int j){
+    if(i<0||j<0||i>=COLS||j>=ROWS){
+        return -1;
+    }
+    for (int x = 0; x < ROWS; ++x) {
+        for (int y = 0; y < COLS; ++y) {
+            if (map[x][y] != 1&&map[x][y] != 0){
+                return -1;
+            }
+        }
+    }
+    static int num = 0;
     if(i>0&&j>0&&map[i-1][j-1])num++;//up left
     if(i>0&&map[i-1][j])num++;
     if(i>0&&j<COLS-1&&map[i-1][j+1])num++;
@@ -13,8 +23,15 @@ int getRoundLive(int map[ROWS][COLS],int i,int j){
     return num;
 }
 
-void lifeCycle_Finite(int map[ROWS][COLS]) {//finite choice
-    int num;//store live cells around
+extern int lifeCycle_Finite(int map[ROWS][COLS]) {//finite choice
+    for (int i = 0; i < ROWS; ++i) {
+        for (int j = 0; j < COLS; ++j) {
+            if (map[i][j] != 1&&map[i][j] != 0){
+                return 1;
+            }
+        }
+    }
+    static int num;//store live cells around
     int temp[ROWS][COLS];// record
     for (int i = 0; i < ROWS; ++i) {
         for (int j = 0; j < COLS; ++j) {
@@ -30,7 +47,7 @@ void lifeCycle_Finite(int map[ROWS][COLS]) {//finite choice
                 if (num == 2) {
                     temp[i][j] = map[i][j];
                 }
-                 else if (num==3 ) {
+                else if (num==3 ) {
                     temp[i][j] = 1;
                 }else {
                     temp[i][j] = 0;
@@ -40,39 +57,46 @@ void lifeCycle_Finite(int map[ROWS][COLS]) {//finite choice
             while (SDL_PollEvent(&event)) {
                 //printf("event type, %d\n",event.type);
                 if (event.type == SDL_QUIT) {
-                    return;
+                    return 0;
                 }
             }
         }
 
-    memcpy(map, temp, sizeof(int) * ROWS * COLS);
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_RenderClear(renderer);
-    for (int i = 0; i < ROWS; ++i) {
-        for (int j = 0; j < COLS; ++j) {
-            drawCell(j, i, map[i][j]);
-            SDL_Event event;
-            while (SDL_PollEvent(&event)) {
-                //printf("event type, %d\n",event.type);
-                if (event.type == SDL_QUIT) {
+        memcpy(map, temp, sizeof(int) * ROWS * COLS);
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        SDL_RenderClear(renderer);
+        for (int i = 0; i < ROWS; ++i) {
+            for (int j = 0; j < COLS; ++j) {
+                drawCell(j, i, map[i][j]);
+                SDL_Event event;
+                while (SDL_PollEvent(&event)) {
+                    //printf("event type, %d\n",event.type);
+                    if (event.type == SDL_QUIT) {
 //            saveWorld(map);
-                    return;
+                        return 0;
+                    }
                 }
             }
         }
-    }
-    SDL_RenderPresent(renderer);
-    SDL_Event event;
-    while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT) {
+        SDL_RenderPresent(renderer);
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
 //            saveWorld(map);
-            return;
+                return 0;
+            }
         }
-    }
-    SDL_Delay(delaytime);
+        SDL_Delay(delaytime);
     }
 }
-void lifeCycle_Step(int map[ROWS][COLS]){//step choice
+int lifeCycle_Step(int map[ROWS][COLS]){//step choice
+    for (int i = 0; i < ROWS; ++i) {
+        for (int j = 0; j < COLS; ++j) {
+            if (map[i][j] != 1&&map[i][j] != 0){
+                return 1;
+            }
+        }
+    }
     int num;//store live cells around
     int temp[ROWS][COLS];// record
     for (int i = 0; i < ROWS; ++i) {
@@ -97,7 +121,7 @@ void lifeCycle_Step(int map[ROWS][COLS]){//step choice
                 while (SDL_PollEvent(&event)) {
                     //printf("event type, %d\n",event.type);
                     if (event.type == SDL_QUIT) {
-                        return;
+                        return 0;
                     }
                 }
             }
@@ -113,8 +137,7 @@ void lifeCycle_Step(int map[ROWS][COLS]){//step choice
                 while (SDL_PollEvent(&event)) {
                     //printf("event type, %d\n",event.type);
                     if (event.type == SDL_QUIT) {
-//                        saveWorld(map);
-                        return;
+                        return 0;
                     }
                 }
             }
@@ -123,8 +146,7 @@ void lifeCycle_Step(int map[ROWS][COLS]){//step choice
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
-//                saveWorld(map);
-                return;
+                return 0;
             }
         }
         SDL_Delay(delaytime);
@@ -139,8 +161,7 @@ void lifeCycle_Step(int map[ROWS][COLS]){//step choice
                 while (SDL_PollEvent(&event)) {
                     //printf("event type, %d\n",event.type);
                     if (event.type == SDL_QUIT) {
-//                                saveWorld(map);
-                        return;
+                        return 0;
                     }
                 }
             }
@@ -149,8 +170,7 @@ void lifeCycle_Step(int map[ROWS][COLS]){//step choice
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
-//                        saveWorld(map);
-                return;
+                return 0;
             }
         }
     }
