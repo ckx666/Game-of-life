@@ -5,9 +5,9 @@ int getRoundLive(int map[ROWS][COLS],int i,int j){
     if(i<0||j<0||i>=COLS||j>=ROWS){
         return -1;
     }
-    for (int i = 0; i < ROWS; ++i) {
-        for (int j = 0; j < COLS; ++j) {
-            if (map[i][j] != 1&&map[i][j] != 0){
+    for (int x = 0; x < ROWS; ++x) {
+        for (int y = 0; y < COLS; ++y) {
+            if (map[x][y] != 1&&map[x][y] != 0){
                 return -1;
             }
         }
