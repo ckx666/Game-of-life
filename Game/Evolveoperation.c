@@ -1,17 +1,18 @@
 #include "LifeGame.h"
 
-extern int getRoundLive(int map[ROWS][COLS],int i,int j){
+
+int getRoundLive(int map[ROWS][COLS],int i,int j){
     if(i<0||j<0||i>=COLS||j>=ROWS){
         return -1;
     }
-    for (int x = 0; x < ROWS; ++x) {
-        for (int y = 0; y < COLS; ++y) {
-            if (map[x][y] != 1&&map[x][y] != 0){
+    for (int i = 0; i < ROWS; ++i) {
+        for (int j = 0; j < COLS; ++j) {
+            if (map[i][j] != 1&&map[i][j] != 0){
                 return -1;
             }
         }
     }
-    static int num = 0;
+    int num = 0;
     if(i>0&&j>0&&map[i-1][j-1])num++;//up left
     if(i>0&&map[i-1][j])num++;
     if(i>0&&j<COLS-1&&map[i-1][j+1])num++;
@@ -23,7 +24,7 @@ extern int getRoundLive(int map[ROWS][COLS],int i,int j){
     return num;
 }
 
-extern int lifeCycle_Finite(int map[ROWS][COLS]) {//finite choice
+int lifeCycle_Finite(int map[ROWS][COLS]) {//finite choice
     for (int i = 0; i < ROWS; ++i) {
         for (int j = 0; j < COLS; ++j) {
             if (map[i][j] != 1&&map[i][j] != 0){
@@ -31,7 +32,7 @@ extern int lifeCycle_Finite(int map[ROWS][COLS]) {//finite choice
             }
         }
     }
-    static int num;//store live cells around
+    int num;//store live cells around
     int temp[ROWS][COLS];// record
     for (int i = 0; i < ROWS; ++i) {
         for (int j = 0; j < COLS; ++j) {
@@ -39,7 +40,6 @@ extern int lifeCycle_Finite(int map[ROWS][COLS]) {//finite choice
         }
     }
     while (1) {
-
         for (int i = 0; i < ROWS; ++i) {
             for (int j = 0; j < COLS; ++j) {
 //get map cells how many live principle
@@ -90,9 +90,11 @@ extern int lifeCycle_Finite(int map[ROWS][COLS]) {//finite choice
     }
 }
 int lifeCycle_Step(int map[ROWS][COLS]){//step choice
+    int t=0;
     for (int i = 0; i < ROWS; ++i) {
         for (int j = 0; j < COLS; ++j) {
             if (map[i][j] != 1&&map[i][j] != 0){
+                t=1;
                 return 1;
             }
         }
@@ -137,6 +139,7 @@ int lifeCycle_Step(int map[ROWS][COLS]){//step choice
                 while (SDL_PollEvent(&event)) {
                     //printf("event type, %d\n",event.type);
                     if (event.type == SDL_QUIT) {
+//                        saveWorld(map);
                         return 0;
                     }
                 }
@@ -146,6 +149,7 @@ int lifeCycle_Step(int map[ROWS][COLS]){//step choice
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
+//                saveWorld(map);
                 return 0;
             }
         }
@@ -161,6 +165,7 @@ int lifeCycle_Step(int map[ROWS][COLS]){//step choice
                 while (SDL_PollEvent(&event)) {
                     //printf("event type, %d\n",event.type);
                     if (event.type == SDL_QUIT) {
+//                                saveWorld(map);
                         return 0;
                     }
                 }
@@ -170,6 +175,7 @@ int lifeCycle_Step(int map[ROWS][COLS]){//step choice
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
+//                        saveWorld(map);
                 return 0;
             }
         }

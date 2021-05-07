@@ -9,6 +9,7 @@ int main() {
     static char COLS2[100];
     static char SPACE2[100];
     static char delaytime2[100];
+
     while(1) {
         printf("\nWelcome to Game of Life\n");
         printf("Please choose an option\n");
@@ -30,11 +31,11 @@ int main() {
                     printf("\nPlease enter height of the new world: ");//rows
                     scanf("%s", ROWS2);
                     if (atoi(ROWS2)==0){
-                        printf("invalid height. Please enter again\n");
+                        printf("invalid height. Please enter again");
                     } else if (atoi(ROWS2)<20){
-                        printf("Too small. Please enter again\n");
+                        printf("Too small. Please enter again");
                     }else if (atoi(ROWS2)>100){
-                        printf("Too big. Please enter again\n");
+                        printf("Too big. Please enter again");
                     } else{
                         ROWS=atoi(ROWS2);
                         break;
@@ -44,11 +45,11 @@ int main() {
                     printf("Please enter width of the new world: ");//cols
                     scanf("%s", COLS2);
                     if (atoi(COLS2)==0){
-                        printf("invalid height. Please enter again\n");
+                        printf("invalid height. Please enter again");
                     } else if (atoi(COLS2)<20){
-                        printf("Too small. Please enter again\n");
+                        printf("Too small. Please enter again");
                     }else if (atoi(COLS2)>100){
-                        printf("Too big. Please enter again\n");
+                        printf("Too big. Please enter again");
                     } else{
                         COLS=atoi(COLS2);
                         break;
@@ -75,7 +76,7 @@ int main() {
                         printf("invalid height. Please enter again\n");
                     } else if (atoi(delaytime2)<10){
                         printf("Too small. Please enter again\n");
-                    }else if (atoi(delaytime2)>10000){
+                    }else if (atoi(delaytime2)>1000){
                         printf("Too big. Please enter again\n");
                     } else{
                         delaytime=atoi(delaytime2);
@@ -100,6 +101,7 @@ int main() {
             //initial array end
 
             if (strcmp(choice, "yes") == 0) {
+
                 while (1) {
                     printf("Please enter steps you want to evolve:\n ");//step
                     scanf("%s", step);
@@ -238,6 +240,7 @@ int main() {
                             printf("invalid step\n");
                         }
                     }
+
                 } else if (strcmp(choice, "no") == 0) {
                     if (SDL_Init(SDL_INIT_VIDEO)) {
                         SDL_Log("Can not init video, %s", SDL_GetError());
@@ -267,6 +270,7 @@ int main() {
         }
 //leave
             else if(atoi(option)==3){
+
                 printf("Thank you for playing the game!\n");
                 printf("Goodbye!");
                 end = 1;
@@ -277,6 +281,7 @@ int main() {
         if (end == 1)
             break;
     }
+
     return 0;
 
 }
